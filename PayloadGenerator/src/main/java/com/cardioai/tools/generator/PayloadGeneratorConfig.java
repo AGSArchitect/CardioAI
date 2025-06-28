@@ -12,12 +12,14 @@ public class PayloadGeneratorConfig {
     private final int fromTime;
     private final int toTime;
     private final String targetDirectoryPath;
+    private final String scriptFilePath;
 
-    public PayloadGeneratorConfig(String manifestFilePath, int fromTime, int toTime, String targetDirectoryPath) {
+    public PayloadGeneratorConfig(String manifestFilePath, int fromTime, int toTime, String targetDirectoryPath, String scriptFilePath) {
         this.manifestFilePath = manifestFilePath;
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.targetDirectoryPath = targetDirectoryPath;
+        this.scriptFilePath = scriptFilePath;
     }
 
     public String getManifestFilePath() {
@@ -34,5 +36,9 @@ public class PayloadGeneratorConfig {
 
     public String getTargetDirectoryPath() {
         return targetDirectoryPath;
+    }
+
+    public String getScriptFilePath() {
+        return scriptFilePath;
     }
 }

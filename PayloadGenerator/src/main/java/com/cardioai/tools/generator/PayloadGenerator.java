@@ -1,6 +1,8 @@
 package com.cardioai.tools.generator;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -32,11 +34,16 @@ public class PayloadGenerator {
             }
 
             List<String> commands = buildExtractionCommands(config, records);
-            /**
-             *
-             * TODO: Generate Shell Script...
-             *
-             */
+            File scriptFile = new File(config.getScriptFilePath());
+            FileWriter writter = new FileWriter(scriptFile);
+            try (BufferedWriter writer = new BufferedWriter(writter)) {
+                writer.write("#!/usr/bin/bash");
+                writer.newLine();
+                for (String command : commands) {
+                    writer.write(command);
+                    writer.newLine();
+                }
+            }
         } catch (IOException | IllegalStateException | InterruptedException ex) {
             ex.printStackTrace();
         }
@@ -47,6 +54,7 @@ public class PayloadGenerator {
         int fromTime = 0;
         int toTime = 60;
         String targetDirectoryPath = null;
+        String scriptFilePath = null;
 
         for (int e = 0; e < args.length; e++) {
             switch (args[e]) {
@@ -80,6 +88,11 @@ public class PayloadGenerator {
                     }
                     break;
                 }
+                case "-s":
+                case "--script": {
+                    scriptFilePath = args[++e];
+                    break;
+                }
                 default:
                     logErrorMessage(
                             LogMessage.PG003, args[e]);
@@ -88,7 +101,7 @@ public class PayloadGenerator {
         }
 
         return new PayloadGeneratorConfig(
-                manifestFilePath, fromTime, toTime, targetDirectoryPath);
+                manifestFilePath, fromTime, toTime, targetDirectoryPath, scriptFilePath);
     }
 
     private static List<String> buildExtractionCommands(PayloadGeneratorConfig config, List<String> records) throws IOException, InterruptedException {
@@ -106,7 +119,7 @@ public class PayloadGenerator {
                     .concat(dataFileName)
                     .concat(".txt");
 
-            // Example: rdsamp -r ./record.hea -c -H -f 0 -t 60 -v > /payloads/53d22f41-e20f-4142-aea3-04d1bb09048c.txt
+            // Example: rdsamp -r ./dataset/record.hea -c -H -f 0 -t 60 -v > /data/53d22f41-e20f-4142-aea3-04d1bb09048c.txt
             StringBuilder command = new StringBuilder();
             command.append("rdsamp ");
             command.append("-r ");
