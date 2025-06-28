@@ -14,7 +14,15 @@ public enum LogMessage {
     /**
      * PG002
      */
-    PG002("code=\"{}\" message=\"The destination value is either not a directory or does not exist\" file=\"{}\"");
+    PG002("code=\"{}\" message=\"The destination value is either not a directory or does not exist\" directory=\"{}\""),
+    /**
+     * PG003
+     */
+    PG003("code=\"{}\" message=\"The command line argument is unknown\" argument=\"{}\""),
+    /**
+     * PG004
+     */
+    PG004("code=\"{}\" message=\"The header value is either not a file or does not exist\" file=\"{}\"");
 
     private final String message;
 

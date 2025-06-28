@@ -2,9 +2,11 @@ package com.cardioai.tools.generator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,50 +24,106 @@ public class PayloadGenerator {
     public static void main(String[] args) {
         try {
             PayloadGeneratorConfig config = getPayloadGeneratorConfig(args);
-
             List<String> records = new LinkedList();
-            Scanner scanner = new Scanner(new File(config.getManifestFilePath()));
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+            Scanner recordScanner = new Scanner(new File(config.getManifestFilePath()));
+            while (recordScanner.hasNextLine()) {
+                String line = recordScanner.nextLine();
                 records.add(line);
             }
-            
+
+            List<String> commands = buildExtractionCommands(config, records);
             /**
-             * 
-             * TODO: Simple-threaded implementation of the Payload Generator from PhysioNet WFDB records.
-             * 
+             *
+             * TODO: Generate Shell Script...
+             *
              */
-        } catch (IOException ex) {
+        } catch (IOException | IllegalStateException | InterruptedException ex) {
             ex.printStackTrace();
         }
     }
 
     private static PayloadGeneratorConfig getPayloadGeneratorConfig(String[] args) throws IOException {
         String manifestFilePath = null;
+        int fromTime = 0;
+        int toTime = 60;
         String targetDirectoryPath = null;
 
         for (int e = 0; e < args.length; e++) {
-            if (args[e].equals("-m") || args[e].equals("--manifest")) {
-                manifestFilePath = args[++e];
-                File check = new File(manifestFilePath);
-                if (!check.exists() || !check.isFile()) {
-                    logErrorMessage(
-                            LogMessage.PG001, manifestFilePath);
-                    throw new IOException();
+            switch (args[e]) {
+                case "-m":
+                case "--manifest": {
+                    manifestFilePath = args[++e];
+                    File check = new File(manifestFilePath);
+                    if (!check.exists() || !check.isFile()) {
+                        logErrorMessage(
+                                LogMessage.PG001, manifestFilePath);
+                        throw new IOException();
+                    }
+                    break;
                 }
-            } else if (args[e].equals("-d") || args[e].equals("--destination")) {
-                targetDirectoryPath = args[++e];
-                File check = new File(targetDirectoryPath);
-                if (!check.exists() || !check.isDirectory()) {
-                    logErrorMessage(
-                            LogMessage.PG002, targetDirectoryPath);
-                    throw new IOException();
+                case "-f":
+                case "--from-time":
+                    fromTime = Integer.parseInt(args[++e]);
+                    break;
+                case "-t":
+                case "--to-time":
+                    toTime = Integer.parseInt(args[++e]);
+                    break;
+                case "-d":
+                case "--destination": {
+                    targetDirectoryPath = args[++e];
+                    File check = new File(targetDirectoryPath);
+                    if (!check.exists() || !check.isDirectory()) {
+                        logErrorMessage(
+                                LogMessage.PG002, targetDirectoryPath);
+                        throw new IOException();
+                    }
+                    break;
                 }
+                default:
+                    logErrorMessage(
+                            LogMessage.PG003, args[e]);
+                    throw new IllegalStateException();
             }
         }
 
         return new PayloadGeneratorConfig(
-                manifestFilePath, targetDirectoryPath);
+                manifestFilePath, fromTime, toTime, targetDirectoryPath);
+    }
+
+    private static List<String> buildExtractionCommands(PayloadGeneratorConfig config, List<String> records) throws IOException, InterruptedException {
+        List<String> commands = new ArrayList<>();
+
+        for (String record : records) {
+            File headerFile = new File(record);
+            if (!headerFile.exists() || !headerFile.isFile()) {
+                logErrorMessage(LogMessage.PG004, record);
+                throw new IOException();
+            }
+
+            String dataFileName = UUID.randomUUID().toString();
+            String dataFullFilePath = config.getTargetDirectoryPath()
+                    .concat(dataFileName)
+                    .concat(".txt");
+
+            // Example: rdsamp -r ./record.hea -c -H -f 0 -t 60 -v > /payloads/53d22f41-e20f-4142-aea3-04d1bb09048c.txt
+            StringBuilder command = new StringBuilder();
+            command.append("rdsamp ");
+            command.append("-r ");
+            command.append(record);
+            command.append(" -c ");
+            command.append("-H ");
+            command.append("-f ");
+            command.append(config.getFromTime());
+            command.append(" -t ");
+            command.append(config.getToTime());
+            command.append(" -v ");
+            command.append("> ");
+            command.append(dataFullFilePath);
+            commands.add(command.toString());
+        }
+
+        return commands;
     }
 
     private static void logErrorMessage(LogMessage error, String value) {
