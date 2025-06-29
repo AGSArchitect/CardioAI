@@ -4,7 +4,7 @@
   <groupId>com.cardioai.tools</groupId>
   <artifactId>payload-generator</artifactId>
   <name>PayloadGenerator</name>
-  <version>1.0</version>
+  <version>1.0.0</version>
   <description>CardioAI Payload Generator</description>
   <build>
     <plugins>
@@ -34,7 +34,7 @@
   </build>
   <properties>
     <maven.compiler.release>17</maven.compiler.release>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <exec.mainClass>PayloadGenerator</exec.mainClass>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>
