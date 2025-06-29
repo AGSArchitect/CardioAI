@@ -6,7 +6,7 @@ PhysioNet stores the electrocardiogram data files on various WaveForm Database f
 The team is using the WFDB applications from the WFDB Software Package to work with the WFDB files. More specifically, the utilities use the `rdsamp` command to extract the electrocardiogram data using various criteria. The utilities are not exemplifications of production-level code. They have been written to achieve the intended functionality using multiple approaches in the fastest way possible and do not claim to be either logically or functionally correct. Lastly, the decision to concentrate on Solution Architecture instead of software development as part of the Impact Project has allocated more attention to other areas of concentration.
 
 ## Step 1: Create a Manifest
-The team concluded that it would be more flexible to use manifest files instead of pointing the DataExtractor utility at an entire dataset. Additionally, working with manifest files provides extra flexibility, such as extracting data from multiple datasets, and they could be saved as configurations. The following command will create a manifest file for the PTB-XL dataset:
+The team concluded that it would be more flexible to use manifest files instead of pointing the DataExtractor utility at an entire dataset. Additionally, working with manifest files provides extra flexibility, such as extracting data from multiple datasets, and they could be saved as configurations. The following command will create a manifest file for the [PTB-XL](https://physionet.org/content/ptb-xl/1.0.3/) dataset:
 
 `find ./ptb-xl/ -type f -regex '.*\.hea$' > ptb-xl.mf`
 
@@ -52,7 +52,7 @@ The Java utility names the data files using a Universally Unique Identifier (UUI
 10,3,-119,-122,59,63,-120,89,45,55,60,-12,-55
 11,12,-120,-133,54,73,-126,93,43,55,62,-6,-53  
 ```
-**Example 1:** A record generated from the [PTB-XL](https://physionet.org/content/ptb-xl/1.0.3/) ECG dataset (12-lead)
+**Example 1:** A record generated from the PTB-XL ECG dataset (12-lead)
 
 ## Step 3: Data Conversion
 
