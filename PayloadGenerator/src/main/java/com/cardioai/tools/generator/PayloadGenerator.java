@@ -1,8 +1,11 @@
 package com.cardioai.tools.generator;
 
 import com.cardioai.tools.model.PayloadVO;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +31,8 @@ public class PayloadGenerator {
             File sourceDirectory = new File(config.getSourceDirectoryPath());
             File[] dataFiles = sourceDirectory.listFiles();
             List<PayloadVO> payloads = getPayloads(dataFiles);
-            /**
-             *
-             * TODO: Write Payloads to Disk...
-             *
-             */
+            writePayloadFiles(
+                    config.getTargetDirectoryPath(), payloads);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -128,6 +128,23 @@ public class PayloadGenerator {
 
     private static String getRecordId(String name) {
         return name.substring(0, name.indexOf("."));
+    }
+
+    private static void writePayloadFiles(String targetDirectoryPath, List<PayloadVO> payloads) throws IOException {
+        for (PayloadVO payload : payloads) {
+            String payloadFullFilePath = targetDirectoryPath
+                    .concat(payload.getRecordId())
+                    .concat(".json");
+            String payloadFileContent = getContent(payload);
+            try (FileWriter writer = new FileWriter(payloadFullFilePath)) {
+                writer.write(payloadFileContent);
+            }
+        }
+    }
+
+    private static String getContent(PayloadVO payload) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(payload);
     }
 
     private static void logErrorMessage(LogMessage error, String value) {
