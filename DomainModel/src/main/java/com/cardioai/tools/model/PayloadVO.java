@@ -1,5 +1,7 @@
 package com.cardioai.tools.model;
 
+import java.util.List;
+
 /**
  * PayloadVO
  *
@@ -14,7 +16,7 @@ public class PayloadVO {
     private int sequence;
     private int index;
     private String headers;
-    private String data;
+    private List<String> data;
     private long created;
 
     public String getDeviceId() {
@@ -65,11 +67,11 @@ public class PayloadVO {
         this.headers = headers;
     }
 
-    public String getData() {
+    public List<String> getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(List<String> data) {
         this.data = data;
     }
 
