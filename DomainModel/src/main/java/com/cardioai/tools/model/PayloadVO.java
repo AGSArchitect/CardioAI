@@ -17,6 +17,7 @@ public class PayloadVO {
     private int index;
     private String headers;
     private List<String> data;
+    private String recordId;
     private long created;
 
     public String getDeviceId() {
@@ -73,6 +74,14 @@ public class PayloadVO {
 
     public void setData(List<String> data) {
         this.data = data;
+    }
+
+    public String getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
     }
 
     public long getCreated() {
