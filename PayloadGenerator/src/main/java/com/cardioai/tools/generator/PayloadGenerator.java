@@ -1,7 +1,13 @@
 package com.cardioai.tools.generator;
 
+import com.cardioai.tools.model.PayloadVO;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +25,14 @@ public class PayloadGenerator {
     public static void main(String[] args) {
         try {
             PayloadGeneratorConfig config = getPayloadGeneratorConfig(args);
-
+            File sourceDirectory = new File(config.getSourceDirectoryPath());
+            File[] dataFiles = sourceDirectory.listFiles();
+            List<PayloadVO> payloads = getPayloads(dataFiles);
+            /**
+             * 
+             * TODO: Write Payloads to Disk...
+             * 
+             */
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -62,6 +75,49 @@ public class PayloadGenerator {
 
         return new PayloadGeneratorConfig(
                 sourceDirectoryPath, targetDirectoryPath);
+    }
+
+    private static List<PayloadVO> getPayloads(File[] dataFiles) throws FileNotFoundException {
+        List<PayloadVO> payloads = new ArrayList();
+
+        for (File dataFile : dataFiles) {
+            PayloadVO payload = new PayloadVO();
+            payload.setDeviceId(getNextUUID());
+            payload.setCustomerId(getNextUUID());
+            payload.setSequenceId(getNextUUID());
+            payload.setSequence(1);
+            payload.setIndex(1);
+
+            Scanner dataScanner = new Scanner(dataFile);
+            String headers = transformDataFileHeader(dataScanner.nextLine());
+            List<String> data = new ArrayList<>();
+            while (dataScanner.hasNextLine()) {
+                data.add(dataScanner.nextLine());
+            }
+
+            payload.setHeaders(headers);
+            payload.setData(data);
+            payload.setCreated(getTime());
+
+            payloads.add(payload);
+        }
+
+        return payloads;
+    }
+
+    private static String getNextUUID() {
+        return UUID.randomUUID().toString();
+    }
+
+    private static long getTime() {
+        return System.currentTimeMillis();
+    }
+
+    private static String transformDataFileHeader(String fileHeaders) {
+        String headers = fileHeaders.toUpperCase();
+        headers = headers.replaceAll("'", "");
+        headers = headers.replaceFirst("SAMPLE #", "INDEX");
+        return headers;
     }
 
     private static void logErrorMessage(LogMessage error, String value) {
