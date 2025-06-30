@@ -1,2 +1,61 @@
 # CardioAI
-Professional Certificate Program in Product Management
+The CardioAI repository contains a series of utilities for extracting, converting, and transmitting electrocardiogram data files originating from various databases hosted at [PhysioNet](https://physionet.org/). The utilities were developed by Group 2 (Cohord 20024) as part of the Professional Certificate Program in Product Management from the Massachusetts Institute of Technology (MIT).
+
+PhysioNet stores the electrocardiogram data files on various WaveForm Database formats, which are also referred to as WFDB. A WFDB record is comprised of a header file and any number of signal and annotation files in binary format. Because the CardioAI ingestion layer expects data files to be transmitted in JavaScript Object Notation (JSON) format over HTTP, the team developed these utilities to convert the extracted electrocardiogram data into suitable payloads and messages to be consumed by the ingestion layer.
+
+The team is using the WFDB applications from the WFDB Software Package to work with the WFDB files. More specifically, the utilities use the `rdsamp` command to extract the electrocardiogram data using various criteria. The utilities are not exemplifications of production-level code. They have been written to achieve the intended functionality using multiple approaches in the fastest way possible and do not claim to be either logically or functionally correct. Lastly, the decision to concentrate on Solution Architecture instead of software development as part of the Impact Project has allocated more attention to other areas of concentration.
+
+## Step 1: Create a Manifest
+The team concluded that it would be more flexible to use manifest files instead of pointing the DataExtractor utility at an entire dataset. Additionally, working with manifest files provides extra flexibility, such as extracting data from multiple datasets, and they could be saved as configurations. The following command will create a manifest file for the [PTB-XL](https://physionet.org/content/ptb-xl/1.0.3/) dataset:
+
+`find ./ptb-xl/ -type f -regex '.*\.hea$' > ptb-xl.mf`
+
+## Step 2: Data Extraction
+The DataExtractor is a Java utility that generates a shell script to extract electrocardiogram data. Consequently, pulling the data is a two-step process. PhysioNet offers Java bindings to facilitate interoperability with the WFDB library via WFDB-SWIG. However, since we are only interested in data extraction at this time, we used a more direct approach. The supported command line arguments are summarized below.
+
+| Short Form  | Long Form     | Function                                      | Required |
+| :---        | :---          | :---                                          | :---:    | 
+| -m          | --manifest    | The manifest file that is to be processed.    | true     |
+| -f          | --from-time   | Begin at the specified time (sec).            | false    |
+| -t          | --to-time     | Stop at the specified time (sec).             | false    |
+| -d          | --destination | The destination folder of the extracted data. | true     |
+| -s          | --script      | The name of the data extraction script.       | true     |
+
+Create the shell script by running the DataExtractor Java utility as follows:
+
+`java -jar data-extractor-1.0.0.jar -m ptb-xl.mf -f 0 -t 60 -d ./data/ -s ptb-xl.sh`
+
+Make the scripts executable after creation as follows:
+
+`chmod +x ptb-xl.sh`
+
+Lastly, execute the script to extract the electrocardiogram data into the destination directory as follows:
+
+`./ptb-xl.sh`
+
+The Java utility names the data files using a Universally Unique Identifier (UUID) to avoid potential collisions when extracting data from various datasets contained in a single or across multiple manifest files. Verify the data extraction is progressing as expected by inspecting one or more of the data files as follows:
+
+`cat ./data/b637c14f-65fe-4aaf-8fca-5cbb30fd7e32.txt`
+
+```
+'sample #','I','II','III','AVR','AVL','AVF','V1','V2','V3','V4','V5','V6'
+0,-12,-140,-128,77,58,-133,100,69,55,70,-30,-75
+1,4,-138,-142,67,73,-139,98,71,55,70,-29,-74
+2,7,-132,-139,63,73,-135,92,81,55,70,-25,-70
+3,7,-129,-136,61,72,-132,89,76,56,70,-22,-67
+4,10,-123,-133,57,72,-128,84,71,61,70,-17,-62
+5,10,-120,-130,55,70,-125,80,66,60,70,-15,-59
+6,9,-120,-128,56,69,-124,85,60,60,65,-16,-56
+7,5,-120,-125,58,65,-122,85,55,57,65,-14,-55
+8,5,-119,-124,58,64,-121,86,51,55,64,-19,-55
+9,6,-120,-126,58,66,-123,91,49,55,60,-20,-55
+10,3,-119,-122,59,63,-120,89,45,55,60,-12,-55
+11,12,-120,-133,54,73,-126,93,43,55,62,-6,-53  
+```
+**Example 1:** A record generated from the PTB-XL ECG dataset (12-lead)
+
+## Step 3: Data Conversion
+
+_Under development..._
+
+Ariel Gonzalez
