@@ -50,12 +50,103 @@ The Java utility names the data files using a Universally Unique Identifier (UUI
 8,5,-119,-124,58,64,-121,86,51,55,64,-19,-55
 9,6,-120,-126,58,66,-123,91,49,55,60,-20,-55
 10,3,-119,-122,59,63,-120,89,45,55,60,-12,-55
-11,12,-120,-133,54,73,-126,93,43,55,62,-6,-53  
+11,12,-120,-133,54,73,-126,93,43,55,62,-6,-53
+...
 ```
 **Example 1:** A record generated from the PTB-XL ECG dataset (12-lead)
 
 ## Step 3: Data Conversion
 
-_Under development..._
+The PayloadGenerator is a Java utility that reads the extracted data from the previous step and generates JSON serialized payloads for the CardioAI ingestion layer. The payloads will be part of a final message containing additional fields. The supported command line arguments are summarized below.
+
+| Short Form  | Long Form     | Function                                      | Required |
+| :---        | :---          | :---                                          | :---:    | 
+| -s          | --source      | The source folder of the extracted data.      | true     |
+| -d          | --destination | The destination folder of the payload files.  | true     |
+
+Create the payload files by running the PayloadGenerator Java utility as follows:
+
+`java -jar payload-generator-1.0.0.jar -s ./data/ -d ./payloads/`
+
+The data model has a `sequence` and an `index` field to facilitate segmenting extensive electrocardiogram readings into multiple payloads for more efficient transmission using various messages. The former field indicates the number of payloads in the sequence, and the latter the position of each payload in the sequence.
+
+```
+{
+  "deviceId": "351d51f7-00ee-4df2-971d-769c6607d2a8",
+  "customerId": "2516fa1f-3231-4eb1-bab7-64f949ac7b24",
+  "sequenceId": "f8d9e673-f562-4b79-a32f-699ac54517e1",
+  "sequence": 1,
+  "index": 1,
+  "headers": "INDEX,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6",
+  "data": [
+    "0,-70,-36,34,52,-51,-1,-6,-55,-80,-110,-116,-75",
+    "1,-81,-35,46,57,-63,6,-8,-55,-79,-109,-114,-73",
+    "2,-95,-31,64,64,-80,16,-4,-55,-74,-112,-114,-70",
+    "3,-86,-30,56,58,-71,13,-6,-55,-68,-104,-107,-63",
+    "4,-89,-24,65,56,-76,20,-5,-56,-68,-107,-107,-61",
+    "5,-80,-29,52,55,-66,11,-5,-54,-57,-104,-105,-57",
+    "6,-85,11,96,37,-91,53,-6,-61,-68,-83,-73,-30",
+    "7,-69,40,108,14,-89,74,-14,-43,-64,-38,26,43",
+    "8,-13,54,67,-21,-40,60,-3,51,48,163,364,217",
+    "9,96,-56,-152,-20,124,-104,69,226,199,260,421,222",
+    "10,331,-506,-838,88,585,-672,-163,-102,-162,-231,-143,-135",
+    "11,424,-1028,-1452,302,938,-1240,-569,-874,-954,-1074,-870,-656"
+    ...
+  ],
+  "recordId": "11e6ab36-99cd-44e6-ac02-973b0254ebf4",
+  "created": 1751263775013
+}
+```
+**Example 2:** A payload generated from the PTB-XL ECG dataset (12-lead)
+
+```
+{
+  "deviceId": "fbe013a2-0f2f-43f1-9a76-5384a9703396",
+  "customerId": "4b350011-8bb5-4fc3-8065-84e1fdcdf7ed",
+  "sequenceId": "d4aa035d-9a3a-4e2e-9d2c-ae6b481bb68c",
+  "sequence": 2,
+  "index": 1,
+  "headers": "INDEX,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6",
+  "data": [
+    "0,-110,44,155,32,-133,99,5,-44,373,-94,-115,96",
+    "1,-156,-4,151,80,-153,73,5,-33,373,-82,-110,104",
+    "2,-145,-1,144,73,-144,71,-4,-18,376,-69,-97,111",
+    ...
+  ],
+  "recordId": "0fca8976-6e5e-42e8-9a4d-c4dcbaecae92",
+  "created": 1751263775011
+}
+```
+**Example 3:** The first payload of a sequence of two messages.
+
+```
+{
+  "deviceId": "fbe013a2-0f2f-43f1-9a76-5384a9703396",
+  "customerId": "4b350011-8bb5-4fc3-8065-84e1fdcdf7ed",
+  "sequenceId": "d4aa035d-9a3a-4e2e-9d2c-ae6b481bb68c",
+  "sequence": 2,
+  "index": 2,
+  "headers": "INDEX,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6",
+  "data": [
+    ...
+    "52998,-95,-23,72,59,-83,24,-4,4,-96,-231,-235,-116",
+    "52999,-65,6,70,29,-68,38,-5,0,-100,-237,-235,-114",
+    "53000,-60,2,61,29,-60,31,-5,-7,-100,-243,-233,-110",
+  ],
+  "recordId": "0fca8976-6e5e-42e8-9a4d-c4dcbaecae92",
+  "created": 1751263775011
+}
+```
+**Example 4:** The second payload of a sequence of two messages.
+
+
+
+
+
+
+
+## Step 3: Traffic Simulation
+
+*Under development...*
 
 Ariel Gonzalez
