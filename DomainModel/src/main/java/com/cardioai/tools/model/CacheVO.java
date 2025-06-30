@@ -10,7 +10,7 @@ public class CacheVO {
 
     private String cacheId;
     private int cacheReads;
-    private MessageVO message;
+    private PayloadVO payload;
     private long created;
 
     public String getCacheId() {
@@ -29,12 +29,12 @@ public class CacheVO {
         this.cacheReads = cacheReads;
     }
 
-    public MessageVO getMessage() {
-        return message;
+    public PayloadVO getPayload() {
+        return payload;
     }
 
-    public void setMessage(MessageVO message) {
-        this.message = message;
+    public void setPayload(PayloadVO payload) {
+        this.payload = payload;
     }
 
     public long getCreated() {
