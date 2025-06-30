@@ -1,6 +1,8 @@
 package com.cardioai.tools.generator;
 
 import com.cardioai.tools.model.PayloadVO;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,9 +31,9 @@ public class PayloadGenerator {
             File[] dataFiles = sourceDirectory.listFiles();
             List<PayloadVO> payloads = getPayloads(dataFiles);
             /**
-             * 
+             *
              * TODO: Write Payloads to Disk...
-             * 
+             *
              */
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -81,31 +83,24 @@ public class PayloadGenerator {
         List<PayloadVO> payloads = new ArrayList();
 
         for (File dataFile : dataFiles) {
+            Scanner dataScanner = new Scanner(dataFile);
             PayloadVO payload = new PayloadVO();
-            payload.setDeviceId(getNextUUID());
-            payload.setCustomerId(getNextUUID());
-            payload.setSequenceId(getNextUUID());
+            payload.setDeviceId(getNextId());
+            payload.setCustomerId(getNextId());
+            payload.setSequenceId(getNextId());
             payload.setSequence(1);
             payload.setIndex(1);
-
-            Scanner dataScanner = new Scanner(dataFile);
-            String headers = transformDataFileHeader(dataScanner.nextLine());
-            List<String> data = new ArrayList<>();
-            while (dataScanner.hasNextLine()) {
-                data.add(dataScanner.nextLine());
-            }
-
-            payload.setHeaders(headers);
-            payload.setData(data);
+            payload.setHeaders(getHeaders(dataScanner));
+            payload.setData(getData(dataScanner));
+            payload.setRecordId(getRecordId(dataFile.getName()));
             payload.setCreated(getTime());
-
             payloads.add(payload);
         }
 
         return payloads;
     }
 
-    private static String getNextUUID() {
+    private static String getNextId() {
         return UUID.randomUUID().toString();
     }
 
@@ -113,11 +108,28 @@ public class PayloadGenerator {
         return System.currentTimeMillis();
     }
 
-    private static String transformDataFileHeader(String fileHeaders) {
-        String headers = fileHeaders.toUpperCase();
+    private static String getHeaders(Scanner dataScanner) {
+        String headers = dataScanner.nextLine();
+
+        headers = headers.toUpperCase();
         headers = headers.replaceAll("'", "");
         headers = headers.replaceFirst("SAMPLE #", "INDEX");
+
         return headers;
+    }
+
+    private static List<String> getData(Scanner dataScanner) {
+        List<String> data = new ArrayList<>();
+
+        while (dataScanner.hasNextLine()) {
+            data.add(dataScanner.nextLine());
+        }
+
+        return data;
+    }
+
+    private static String getRecordId(String name) {
+        return name.substring(0, name.indexOf("."));
     }
 
     private static void logErrorMessage(LogMessage error, String value) {
