@@ -8,21 +8,21 @@ package com.cardioai.tools.extractor;
  */
 public enum LogMessage {
     /**
-     * PG001
+     * DE001
      */
-    PG001("code=\"{}\" message=\"The manifest value is either not a file or does not exist\" file=\"{}\""),
+    DE001("code=\"{}\" message=\"The manifest value is either not a file or does not exist\" file=\"{}\""),
     /**
-     * PG002
+     * DE002
      */
-    PG002("code=\"{}\" message=\"The destination value is either not a directory or does not exist\" directory=\"{}\""),
+    DE002("code=\"{}\" message=\"The destination value is either not a directory or does not exist\" directory=\"{}\""),
     /**
-     * PG003
+     * DE003
      */
-    PG003("code=\"{}\" message=\"The command line argument is unknown\" argument=\"{}\""),
+    DE003("code=\"{}\" message=\"The command line argument is unknown\" argument=\"{}\""),
     /**
-     * PG004
+     * DE004
      */
-    PG004("code=\"{}\" message=\"The header value is either not a file or does not exist\" file=\"{}\"");
+    DE004("code=\"{}\" message=\"The header value is either not a file or does not exist\" file=\"{}\"");
 
     private final String message;
 

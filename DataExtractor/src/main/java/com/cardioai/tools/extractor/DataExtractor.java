@@ -64,7 +64,7 @@ public class DataExtractor {
                     File check = new File(manifestFilePath);
                     if (!check.exists() || !check.isFile()) {
                         logErrorMessage(
-                                LogMessage.PG001, manifestFilePath);
+                                LogMessage.DE001, manifestFilePath);
                         throw new IOException();
                     }
                     break;
@@ -83,7 +83,7 @@ public class DataExtractor {
                     File check = new File(targetDirectoryPath);
                     if (!check.exists() || !check.isDirectory()) {
                         logErrorMessage(
-                                LogMessage.PG002, targetDirectoryPath);
+                                LogMessage.DE002, targetDirectoryPath);
                         throw new IOException();
                     }
                     break;
@@ -95,7 +95,7 @@ public class DataExtractor {
                 }
                 default:
                     logErrorMessage(
-                            LogMessage.PG003, args[e]);
+                            LogMessage.DE003, args[e]);
                     throw new IllegalStateException();
             }
         }
@@ -110,7 +110,8 @@ public class DataExtractor {
         for (String record : records) {
             File headerFile = new File(record);
             if (!headerFile.exists() || !headerFile.isFile()) {
-                logErrorMessage(LogMessage.PG004, record);
+                logErrorMessage(
+                        LogMessage.DE004, record);
                 throw new IOException();
             }
 
