@@ -1,8 +1,6 @@
 package com.cardioai.tools.generator;
 
 import com.cardioai.tools.model.PayloadVO;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
