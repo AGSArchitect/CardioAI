@@ -10,6 +10,51 @@
         <maven.compiler.release>17</maven.compiler.release>
         <exec.mainClass>TrafficSimulator</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.13.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.17</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.cardioai.tools</groupId>
+            <artifactId>domain-model</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
     <name>TrafficSimulator</name>
     <description>CardioAI Traffic Simulator</description>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>com.cardioai.tools.simulator.TrafficSimulator</Main-Class>
+                                        <Build-Number>100</Build-Number>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
