@@ -139,13 +139,31 @@ The data model has a `sequence` and an `index` field to facilitate segmenting ex
 ```
 **Example 4:** The second payload of a sequence of two messages.
 
+## Step 4: Traffic Simulation
 
+The DataExtractor is a Java utility that simulates the traffic of electrocardiogram data arriving at the CardioAI ingestion layer. The initial implementation will have only two adapter types. The primary adapter will relay data over HTTP to the service endpoints, and the secondary adapter will simulate traffic arriving directly into the Enterprise Service Bus (ESB). The latter adapter will be helpful to simulate traffic for customers integrating via AWS PrivateLink. The supported command line arguments are summarized below.
 
+| Short Form  | Long Form     | Function                                          | Required |
+| :---        | :---          | :---                                              | :---:    |
+| -s          | --source      | The source folder of the generated payload files. | true     |
+| -a          | --adapter     | Data relay adapter type (e.g., HTTP, ESB).        | true     |
+| -n          | --name        | The name of the resource receiving traffic.       | true     |
+| -o          | --origin-code | The origin code (e.g., clinical, consumer).       | true     |
+| -v          | --device-code | The origin device code (e.g., D3F153).            | true     |
+| -b          | --before      | Pause before initiating processes (ms).           | false    |
+| -f          | --after       | Pause after each message (ms).                    | false    |
+| -c          | --cycle       | Pause after each monitoring cycle (ms).           | false    |
 
+Start the traffic simulation by running the PayloadGenerator Java utility as follows:
 
+`java -jar traffic-simulator-1.0.0.jar -s ./payloads/ -a HTTP -n http://gateway.cardioai.cloud/data/01/ -o clinical -v D3F153 -b 3500 -f 0 -c 15000`
 
+The utility will simulate a different origin per the available number of processor cores. An origin could be either a physical electrocardiogram device or a dedicated CardioAI edge server within a clinical facility responsible for relaying data from a group of devices. The device code in the message indicates the device that captured the electrocardiogram and is not associated with the origin.
 
-## Step 3: Traffic Simulation
+![Diagram 1](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/diagrams/uml-traffic-simulator.png "Diagram 1")
+**Diagram 1:** UML diagram depicting the main components of the Traffic Simulation utility.
+
+## Step 5: Verification
 
 *Under development...*
 
