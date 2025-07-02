@@ -6,8 +6,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,10 +29,30 @@ public class TrafficSimulator {
     public static void main(String[] args) {
         try {
             TrafficSimulatorConfig config = getTrafficSimulatorConfig(args);
-            List<PayloadVO> payloads = getPayloads(config.getSourceDirectoryPath());
-            /**
-             * TODO: Implement Traffic Simulator...
-             */
+            List<PayloadVO> payloads = Collections.synchronizedList(
+                    getPayloads(config.getSourceDirectoryPath()));
+
+            DataRelayConfig dataRelayConfig = new DataRelayConfig(config);
+            RelayMonitorConfig relayMonitorConfig = new RelayMonitorConfig(config);
+
+            List<Runnable> toExecute = new ArrayList<>();
+            List<Supervisable> toMonitor = new ArrayList<>();
+            for (int i = 0; i < config.getThreads(); i++) {
+                DataRelay dataRelay = new DataRelay(
+                        dataRelayConfig, payloads);
+                toExecute.add(dataRelay);
+                toMonitor.add(dataRelay);
+            }
+
+            int threadPoolSize = config.getThreads() + 1;
+            ExecutorService executor = Executors.newFixedThreadPool(threadPoolSize);
+            for (Runnable e : toExecute) {
+                executor.submit(e);
+            }
+
+            RelayMonitor relayMonitor = new RelayMonitor(
+                    relayMonitorConfig, Collections.unmodifiableList(toMonitor));
+            executor.submit(relayMonitor);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -131,7 +155,7 @@ public class TrafficSimulator {
                 case "-h":
                 case "--threads": {
                     threads = Integer.parseInt(args[++e]);
-                    if (threads < 1) {
+                    if ((threads < 1) && (threads > 25)) {
                         logErrorMessage(
                                 LogMessage.TS009, String.valueOf(threads));
                         throw new IllegalArgumentException();
