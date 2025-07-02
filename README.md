@@ -157,7 +157,7 @@ The DataExtractor is a Java utility that simulates the traffic of electrocardiog
 
 Start the traffic simulation by running the PayloadGenerator Java utility as follows:
 
-`java -jar traffic-simulator-1.0.0.jar -s ./payloads/ -a HTTP -n http://gateway.cardioai.cloud/data/01/ -o clinical -v D3F153 -b 3500 -f 0 -c 15000 -h 3`
+`java -jar traffic-simulator-1.0.0.jar -s ./payloads/ -a HTTP -n http://gateway.cardioai.cloud/data/v1/ -o clinical -v D3F153 -b 3500 -f 0 -c 15000 -h 3`
 
 The utility will simulate a different origin per the available number of processor cores. An origin could be either a physical electrocardiogram device or a dedicated CardioAI edge server within a clinical facility responsible for relaying data from a group of devices. The device code in the message indicates the device that captured the electrocardiogram and is not associated with the origin.
 
