@@ -1,7 +1,13 @@
 package com.cardioai.tools.simulator;
 
+import com.cardioai.tools.model.PayloadVO;
+import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +25,7 @@ public class TrafficSimulator {
     public static void main(String[] args) {
         try {
             TrafficSimulatorConfig config = getTrafficSimulatorConfig(args);
+            List<PayloadVO> payloads = getPayloads(config.getSourceDirectoryPath());
             /**
              * TODO: Implement Traffic Simulator...
              */
@@ -53,7 +60,7 @@ public class TrafficSimulator {
                 case "-a":
                 case "--adapter": {
                     adapterName = args[++e];
-                    if (!adapterName.equals("HTTP") || !adapterName.equals("ESB")) {
+                    if (!adapterName.equals("HTTP") && !adapterName.equals("ESB")) {
                         logErrorMessage(
                                 LogMessage.TS002, String.valueOf(adapterName));
                         throw new IllegalArgumentException();
@@ -73,7 +80,7 @@ public class TrafficSimulator {
                 case "-o":
                 case "--origin-code": {
                     originCode = args[++e];
-                    if (!originCode.equals("clinical") || !originCode.equals("consumer")) {
+                    if (!originCode.equals("clinical") && !originCode.equals("consumer")) {
                         logErrorMessage(
                                 LogMessage.TS004, String.valueOf(originCode));
                         throw new IllegalArgumentException();
@@ -129,6 +136,21 @@ public class TrafficSimulator {
 
         return new TrafficSimulatorConfig(
                 sourceDirectoryPath, adapterName, resourceName, originCode, deviceCode, pauseBeforeInitiating, pauseAfterMessage, pauseAfterCycle);
+    }
+
+    private static List<PayloadVO> getPayloads(String sourceDirectoryPath) throws IOException {
+        List<PayloadVO> payloads = new LinkedList<>();
+
+        Gson gson = new Gson();
+        File sourceDirectory = new File(sourceDirectoryPath);
+        File[] payloadFiles = sourceDirectory.listFiles();
+        for (File payloadFile : payloadFiles) {
+            String json = Files.readString(Paths.get(payloadFile.toURI()));
+            payloads.add(
+                    gson.fromJson(json, PayloadVO.class));
+        }
+
+        return payloads;
     }
 
     private static void logErrorMessage(LogMessage error, String value) {
