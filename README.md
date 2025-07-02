@@ -1,12 +1,12 @@
 # CardioAI
 The CardioAI repository contains a series of utilities for extracting, converting, and transmitting electrocardiogram data files originating from various databases hosted at [PhysioNet](https://physionet.org/). The utilities were developed by Group 2 (Cohord 20024) as part of the Professional Certificate Program in Product Management from the Massachusetts Institute of Technology (MIT).
 
-PhysioNet stores the electrocardiogram data files on various WaveForm Database formats, which are also referred to as WFDB. A WFDB record is comprised of a header file and any number of signal and annotation files in binary format. Because the CardioAI ingestion layer expects data files to be transmitted in JavaScript Object Notation (JSON) format over HTTP, the team developed these utilities to convert the extracted electrocardiogram data into suitable payloads and messages to be consumed by the ingestion layer.
+PhysioNet stores the electrocardiogram data files on various WaveForm Database formats, which are also referred to as WFDB. A WFDB record is comprised of a header file and any number of signal and annotation files in binary format. Because the CardioAI ingestion layer expects data files to be transmitted in JavaScript Object Notation (JSON) format over HTTP, the team developed these utilities to convert the extracted electrocardiogram data into suitable payloads to be consumed by the ingestion layer.
 
 The team is using the WFDB applications from the WFDB Software Package to work with the WFDB files. More specifically, the utilities use the `rdsamp` command to extract the electrocardiogram data using various criteria. The utilities are not exemplifications of production-level code. They have been written to achieve the intended functionality using multiple approaches in the fastest way possible and do not claim to be either logically or functionally correct. Lastly, the decision to concentrate on Solution Architecture instead of software development as part of the Impact Project has allocated more attention to other areas of concentration.
 
 ## Step 1: Create a Manifest
-The team concluded that it would be more flexible to use manifest files instead of pointing the DataExtractor utility at an entire dataset. Additionally, working with manifest files provides extra flexibility, such as extracting data from multiple datasets, and they could be saved as configurations. The following command will create a manifest file for the [PTB-XL](https://physionet.org/content/ptb-xl/1.0.3/) dataset:
+The team concluded that it would be more flexible to use manifest files instead of pointing the DataExtractor utility at an entire dataset. Additionally, working with manifest files provides extra flexibility, such as extracting data from multiple datasets, and they could be saved as configuration files. The following command will create a manifest file for the [PTB-XL](https://physionet.org/content/ptb-xl/1.0.3/) dataset:
 
 `find ./ptb-xl/ -type f -regex '.*\.hea$' > ptb-xl.mf`
 
@@ -159,7 +159,7 @@ Start the traffic simulation by running the PayloadGenerator Java utility as fol
 
 `java -jar traffic-simulator-1.0.0.jar -s ./payloads/ -a HTTP -n http://gateway.cardioai.cloud/data/v1/ -o clinical -v D3F153 -b 3500 -f 0 -c 15000 -h 3`
 
-The utility will simulate a different origin per the available number of processor cores. An origin could be either a physical electrocardiogram device or a dedicated CardioAI edge server within a clinical facility responsible for relaying data from a group of devices. The device code in the message indicates the device that captured the electrocardiogram and is not associated with the origin.
+The utility will use a different `originId` per data relay thread. In a real deployment, an origin will be either a physical electrocardiogram device or a dedicated CardioAI edge server within a clinical facility responsible for relaying data from a group of devices. The `deviceCode` in the message identifies the device that captured the electrocardiogram and is not associated with the origin.
 
 ![Diagram 1](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/diagrams/uml-traffic-simulator.png "Diagram 1")
 **Diagram 1:** UML diagram depicting the main components of the Traffic Simulation utility.
