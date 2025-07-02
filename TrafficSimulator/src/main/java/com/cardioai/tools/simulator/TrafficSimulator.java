@@ -43,6 +43,7 @@ public class TrafficSimulator {
         long pauseBeforeInitiating = 15000;
         long pauseAfterMessage = 0;
         long pauseAfterCycle = 15000;
+        int threads = 1;
 
         for (int e = 0; e < args.length; e++) {
             switch (args[e]) {
@@ -127,15 +128,25 @@ public class TrafficSimulator {
                     }
                     break;
                 }
+                case "-h":
+                case "--threads": {
+                    threads = Integer.parseInt(args[++e]);
+                    if (threads < 1) {
+                        logErrorMessage(
+                                LogMessage.TS009, String.valueOf(threads));
+                        throw new IllegalArgumentException();
+                    }
+                    break;
+                }
                 default:
                     logErrorMessage(
-                            LogMessage.TS009, args[e]);
+                            LogMessage.TS010, args[e]);
                     throw new IllegalStateException();
             }
         }
 
         return new TrafficSimulatorConfig(
-                sourceDirectoryPath, adapterName, resourceName, originCode, deviceCode, pauseBeforeInitiating, pauseAfterMessage, pauseAfterCycle);
+                sourceDirectoryPath, adapterName, resourceName, originCode, deviceCode, pauseBeforeInitiating, pauseAfterMessage, pauseAfterCycle, threads);
     }
 
     private static List<PayloadVO> getPayloads(String sourceDirectoryPath) throws IOException {

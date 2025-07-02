@@ -42,7 +42,11 @@ public enum LogMessage {
     /**
      * TS009
      */
-    TS009("code=\"{}\" ...");    
+    TS009("code=\"{}\" ..."),
+    /**
+     * TS010
+     */
+    TS010("code=\"{}\" ...");
 
     private final String message;
 
