@@ -153,6 +153,7 @@ The DataExtractor is a Java utility that simulates the traffic of electrocardiog
 | -b          | --before      | Pause before initiating processes (ms).           | false    |
 | -f          | --after       | Pause after each message (ms).                    | false    |
 | -c          | --cycle       | Pause after each monitoring cycle (ms).           | false    |
+| -h          | --threads     | The number of data relay threads (e.g., 3, 5).    | false    |
 
 Start the traffic simulation by running the PayloadGenerator Java utility as follows:
 
