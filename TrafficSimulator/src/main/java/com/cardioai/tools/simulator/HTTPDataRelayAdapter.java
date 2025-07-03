@@ -30,7 +30,8 @@ public class HTTPDataRelayAdapter implements DataRelayAdapter {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(resourceName))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(message), StandardCharsets.UTF_8))
+                .POST(HttpRequest.BodyPublishers.ofString(
+                        gson.toJson(message), StandardCharsets.UTF_8))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
