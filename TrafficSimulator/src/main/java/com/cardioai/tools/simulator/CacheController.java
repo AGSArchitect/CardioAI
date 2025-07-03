@@ -28,7 +28,7 @@ public class CacheController {
 
     public void initialize(List<PayloadVO> payloads) {
         if (payloads.isEmpty()) {
-            LogMessage error = LogMessage.TS011;
+            LogMessage error = LogMessage.TS012;
             LOGGER.error(error.getMessage(),
                     error.name());
         }

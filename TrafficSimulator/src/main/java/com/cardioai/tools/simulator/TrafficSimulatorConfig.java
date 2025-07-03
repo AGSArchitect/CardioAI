@@ -17,8 +17,9 @@ public class TrafficSimulatorConfig {
     private final long pauseAfterMessage;
     private final long pauseAfterCycle;
     private final int threads;
+    private final int maximun;
 
-    public TrafficSimulatorConfig(String sourceDirectoryPath, String adapterName, String resourceName, String originCode, String deviceCode, long pauseBeforeInitiating, long pauseAfterMessage, long pauseAfterCycle, int threads) {
+    public TrafficSimulatorConfig(String sourceDirectoryPath, String adapterName, String resourceName, String originCode, String deviceCode, long pauseBeforeInitiating, long pauseAfterMessage, long pauseAfterCycle, int threads, int maximun) {
         this.sourceDirectoryPath = sourceDirectoryPath;
         this.adapterName = adapterName;
         this.resourceName = resourceName;
@@ -28,6 +29,7 @@ public class TrafficSimulatorConfig {
         this.pauseAfterMessage = pauseAfterMessage;
         this.pauseAfterCycle = pauseAfterCycle;
         this.threads = threads;
+        this.maximun = maximun;
     }
 
     public String getSourceDirectoryPath() {
@@ -64,5 +66,9 @@ public class TrafficSimulatorConfig {
 
     public int getThreads() {
         return threads;
+    }
+
+    public int getMaximun() {
+        return maximun;
     }
 }

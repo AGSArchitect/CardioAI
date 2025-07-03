@@ -54,7 +54,7 @@ public class DataRelay implements Runnable, Supervisable {
         /**
          * TODO: Provide Implementation...
          */
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < config.getMaximun(); i++) {
             MessageVO message = new MessageVO(
                     originId,
                     Utils.getNextMessageId(),

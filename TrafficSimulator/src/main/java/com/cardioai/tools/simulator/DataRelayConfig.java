@@ -37,4 +37,8 @@ public class DataRelayConfig {
     public long getPauseAfterMessage() {
         return config.getPauseAfterMessage();
     }
+    
+    public int getMaximun() {
+        return config.getMaximun();
+    }    
 }

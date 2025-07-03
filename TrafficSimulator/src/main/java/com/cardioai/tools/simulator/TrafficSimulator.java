@@ -70,6 +70,7 @@ public class TrafficSimulator {
         long pauseAfterMessage = 0;
         long pauseAfterCycle = 15000;
         int threads = 1;
+        int maximun = 100;
 
         for (int e = 0; e < args.length; e++) {
             switch (args[e]) {
@@ -162,6 +163,15 @@ public class TrafficSimulator {
                     }
                     break;
                 }
+                case "-x":
+                case "--maximun": {
+                    maximun = Integer.parseInt(args[++e]);
+                    if (maximun < 1) {
+                        logErrorMessage(LogMessage.TS011);
+                        throw new IllegalArgumentException();
+                    }
+                    break;
+                }
                 default:
                     logErrorMessage(
                             LogMessage.TS010, args[e]);
@@ -170,7 +180,7 @@ public class TrafficSimulator {
         }
 
         return new TrafficSimulatorConfig(
-                sourceDirectoryPath, adapterName, resourceName, originCode, deviceCode, pauseBeforeInitiating, pauseAfterMessage, pauseAfterCycle, threads);
+                sourceDirectoryPath, adapterName, resourceName, originCode, deviceCode, pauseBeforeInitiating, pauseAfterMessage, pauseAfterCycle, threads, maximun);
     }
 
     private static List<PayloadVO> getPayloads(String sourceDirectoryPath) throws IOException {
