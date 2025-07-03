@@ -53,6 +53,8 @@ public class TrafficSimulator {
             RelayMonitor relayMonitor = new RelayMonitor(
                     relayMonitorConfig, Collections.unmodifiableList(toMonitor));
             executor.submit(relayMonitor);
+
+            registerShutdownHooks(executor, relayMonitor);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -186,6 +188,11 @@ public class TrafficSimulator {
         }
 
         return payloads;
+    }
+
+    private static void registerShutdownHooks(ExecutorService executor, RelayMonitor relayMonitor) {
+        Runtime.getRuntime().addShutdownHook(
+                new ShutdownTrafficSimulator(executor, relayMonitor));
     }
 
     private static void logErrorMessage(LogMessage error, String value) {
