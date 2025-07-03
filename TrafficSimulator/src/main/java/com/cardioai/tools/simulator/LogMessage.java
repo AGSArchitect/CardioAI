@@ -54,7 +54,19 @@ public enum LogMessage {
     /**
      * TS012. The payload collection is empty.
      */
-    TS012("code=\"{}\" message=\"The payload collection is empty\"");
+    TS012("code=\"{}\" message=\"The payload collection is empty\""),
+    /**
+     * TS101. Pause before initiating.
+     */
+    TS101("code=\"{}\" message=\"Pause before initiating\" time={}"),
+    /**
+     * TS201. Pause before initiating.
+     */
+    TS201("code=\"{}\" message=\"Pause before initiating\" time={}"),
+    /**
+     * TS205. Metrics.
+     */
+    TS205("code=\"{}\" message=\"Metrics\" originId=\"{}\" messagesRelayed={} messagesFailed={}");
 
     private final String message;
 

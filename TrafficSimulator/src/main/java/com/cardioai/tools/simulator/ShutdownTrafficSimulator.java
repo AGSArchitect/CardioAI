@@ -21,5 +21,6 @@ public class ShutdownTrafficSimulator extends Thread {
     @Override
     public void run() {
         executor.shutdown();
+        relayMonitor.shutdown();
     }
 }

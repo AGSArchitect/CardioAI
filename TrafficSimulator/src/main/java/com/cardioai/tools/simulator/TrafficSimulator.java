@@ -86,8 +86,8 @@ public class TrafficSimulator {
                     sourceDirectoryPath = args[++e];
                     File check = new File(sourceDirectoryPath);
                     if (!check.exists() || !check.isDirectory()) {
-                        logErrorMessage(
-                                LogMessage.TS001, sourceDirectoryPath);
+                        Utils.logErrorMessage(
+                                LOGGER, LogMessage.TS001, sourceDirectoryPath);
                         throw new IOException();
                     }
                     break;
@@ -96,8 +96,8 @@ public class TrafficSimulator {
                 case "--adapter": {
                     adapterName = args[++e];
                     if (!adapterName.equals("HTTP") && !adapterName.equals("ESB")) {
-                        logErrorMessage(
-                                LogMessage.TS002, String.valueOf(adapterName));
+                        Utils.logErrorMessage(
+                                LOGGER, LogMessage.TS002, adapterName);
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -106,7 +106,7 @@ public class TrafficSimulator {
                 case "--name": {
                     resourceName = args[++e];
                     if (resourceName.startsWith("-")) {
-                        logErrorMessage(LogMessage.TS003);
+                        Utils.logErrorMessage(LOGGER, LogMessage.TS003);
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -115,8 +115,8 @@ public class TrafficSimulator {
                 case "--origin-code": {
                     originCode = args[++e];
                     if (!originCode.equals("clinical") && !originCode.equals("consumer")) {
-                        logErrorMessage(
-                                LogMessage.TS004, String.valueOf(originCode));
+                        Utils.logErrorMessage(
+                                LOGGER, LogMessage.TS004, originCode);
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -125,7 +125,7 @@ public class TrafficSimulator {
                 case "--device-code": {
                     deviceCode = args[++e];
                     if (deviceCode.startsWith("-")) {
-                        logErrorMessage(LogMessage.TS005);
+                        Utils.logErrorMessage(LOGGER, LogMessage.TS005);
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -134,8 +134,8 @@ public class TrafficSimulator {
                 case "--before": {
                     pauseBeforeInitiating = Long.parseLong(args[++e]);
                     if (pauseBeforeInitiating < 0) {
-                        logErrorMessage(
-                                LogMessage.TS006, String.valueOf(pauseBeforeInitiating));
+                        Utils.logErrorMessage(
+                                LOGGER, LogMessage.TS006, String.valueOf(pauseBeforeInitiating));
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -144,8 +144,8 @@ public class TrafficSimulator {
                 case "--after": {
                     pauseAfterMessage = Long.parseLong(args[++e]);
                     if (pauseAfterMessage < 0) {
-                        logErrorMessage(
-                                LogMessage.TS007, String.valueOf(pauseAfterMessage));
+                        Utils.logErrorMessage(
+                                LOGGER, LogMessage.TS007, String.valueOf(pauseAfterMessage));
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -154,8 +154,8 @@ public class TrafficSimulator {
                 case "--cycle": {
                     pauseAfterCycle = Long.parseLong(args[++e]);
                     if (pauseAfterCycle < 0) {
-                        logErrorMessage(
-                                LogMessage.TS008, String.valueOf(pauseAfterCycle));
+                        Utils.logErrorMessage(
+                                LOGGER, LogMessage.TS008, String.valueOf(pauseAfterCycle));
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -164,8 +164,8 @@ public class TrafficSimulator {
                 case "--threads": {
                     threads = Integer.parseInt(args[++e]);
                     if ((threads < 1) && (threads > 25)) {
-                        logErrorMessage(
-                                LogMessage.TS009, String.valueOf(threads));
+                        Utils.logErrorMessage(
+                                LOGGER, LogMessage.TS009, String.valueOf(threads));
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -174,14 +174,14 @@ public class TrafficSimulator {
                 case "--maximun": {
                     maximun = Integer.parseInt(args[++e]);
                     if (maximun < 1) {
-                        logErrorMessage(LogMessage.TS011);
+                        Utils.logErrorMessage(LOGGER, LogMessage.TS011);
                         throw new IllegalArgumentException();
                     }
                     break;
                 }
                 default:
-                    logErrorMessage(
-                            LogMessage.TS010, args[e]);
+                    Utils.logErrorMessage(
+                            LOGGER, LogMessage.TS010, args[e]);
                     throw new IllegalStateException();
             }
         }
@@ -208,19 +208,5 @@ public class TrafficSimulator {
     private static void registerShutdownHooks(ExecutorService executor, RelayMonitor relayMonitor) {
         Runtime.getRuntime().addShutdownHook(
                 new ShutdownTrafficSimulator(executor, relayMonitor));
-    }
-
-    private static void logErrorMessage(LogMessage error) {
-        logErrorMessage(error, null);
-    }
-
-    private static void logErrorMessage(LogMessage error, String value) {
-        if (value != null) {
-            LOGGER.error(error.getMessage(),
-                    error.name(), value);
-        } else {
-            LOGGER.error(error.getMessage(),
-                    error.name());
-        }
     }
 }

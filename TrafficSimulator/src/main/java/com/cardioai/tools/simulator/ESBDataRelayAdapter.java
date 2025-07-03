@@ -4,6 +4,12 @@ import com.cardioai.tools.model.MessageVO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * ESBDataRelayAdapter
+ *
+ * @author Ariel Gonzalez
+ * @version 1.0
+ */
 public class ESBDataRelayAdapter implements DataRelayAdapter {
 
     private final String resourceName;

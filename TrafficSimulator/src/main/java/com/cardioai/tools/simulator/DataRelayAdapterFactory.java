@@ -3,6 +3,12 @@ package com.cardioai.tools.simulator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * DataRelayAdapterFactory
+ *
+ * @author Ariel Gonzalez
+ * @version 1.0
+ */
 public class DataRelayAdapterFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataRelayAdapterFactory.class);
@@ -18,9 +24,8 @@ public class DataRelayAdapterFactory {
                 adapter = new ESBDataRelayAdapter(resourceName);
                 break;
             default:
-                LogMessage error = LogMessage.TS002;
-                LOGGER.error(error.getMessage(),
-                        error.name(), adapterName);
+                Utils.logErrorMessage(
+                        LOGGER, LogMessage.TS002, adapterName);
                 throw new IllegalStateException();
         }
 

@@ -7,4 +7,6 @@ package com.cardioai.tools.simulator;
  * @version 1.0
  */
 public interface Supervisable {
+
+    public abstract DataRelayMetrics getMetrics();
 }

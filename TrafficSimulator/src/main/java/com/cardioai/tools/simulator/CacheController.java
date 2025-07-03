@@ -4,7 +4,6 @@ import com.cardioai.tools.model.CacheVO;
 import com.cardioai.tools.model.PayloadVO;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,32 +27,24 @@ public class CacheController {
 
     public void initialize(List<PayloadVO> payloads) {
         if (payloads.isEmpty()) {
-            LogMessage error = LogMessage.TS012;
-            LOGGER.error(error.getMessage(),
-                    error.name());
+            Utils.logErrorMessage(
+                    LOGGER, LogMessage.TS012);
         }
 
         for (PayloadVO payload : payloads) {
-            caches.add(new CacheVO(getNextId(), payload, getTime()));
+            caches.add(new CacheVO(
+                    Utils.getNextCacheId(), payload, Utils.getCurrentTime()));
         }
     }
 
     public PayloadVO getNextPayload() {
         CacheVO cache = caches.get(index);
         cache.increaseCacheReads();
-        cache.setAccessed(getTime());
+        cache.setAccessed(Utils.getCurrentTime());
 
         caches.set(index, cache);
         index = (caches.size() == (index + 1)) ? 0 : (index + 1);
 
         return cache.getPayload();
-    }
-
-    private static String getNextId() {
-        return UUID.randomUUID().toString();
-    }
-
-    private static long getTime() {
-        return System.currentTimeMillis();
     }
 }

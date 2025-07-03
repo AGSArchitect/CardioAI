@@ -4,6 +4,12 @@ import com.cardioai.tools.model.MessageVO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * HTTPDataRelayAdapter
+ *
+ * @author Ariel Gonzalez
+ * @version 1.0
+ */
 public class HTTPDataRelayAdapter implements DataRelayAdapter {
 
     private final String resourceName;
@@ -18,7 +24,6 @@ public class HTTPDataRelayAdapter implements DataRelayAdapter {
          * TODO: Provide Implementation...
          */
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(
-                gson.toJson(message));
+        gson.toJson(message);
     }
 }
