@@ -98,8 +98,7 @@ public class TrafficSimulator {
                 case "--name": {
                     resourceName = args[++e];
                     if (resourceName.startsWith("-")) {
-                        logErrorMessage(
-                                LogMessage.TS003, String.valueOf(resourceName));
+                        logErrorMessage(LogMessage.TS003);
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -118,8 +117,7 @@ public class TrafficSimulator {
                 case "--device-code": {
                     deviceCode = args[++e];
                     if (deviceCode.startsWith("-")) {
-                        logErrorMessage(
-                                LogMessage.TS005, String.valueOf(deviceCode));
+                        logErrorMessage(LogMessage.TS005);
                         throw new IllegalArgumentException();
                     }
                     break;
@@ -195,8 +193,17 @@ public class TrafficSimulator {
                 new ShutdownTrafficSimulator(executor, relayMonitor));
     }
 
+    private static void logErrorMessage(LogMessage error) {
+        logErrorMessage(error, null);
+    }
+
     private static void logErrorMessage(LogMessage error, String value) {
-        LOGGER.error(error.getMessage(),
-                error.name(), value);
+        if (value != null) {
+            LOGGER.error(error.getMessage(),
+                    error.name(), value);
+        } else {
+            LOGGER.error(error.getMessage(),
+                    error.name());
+        }
     }
 }
