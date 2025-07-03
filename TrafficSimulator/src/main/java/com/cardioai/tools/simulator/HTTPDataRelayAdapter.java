@@ -17,16 +17,17 @@ import java.nio.charset.StandardCharsets;
 public class HTTPDataRelayAdapter implements DataRelayAdapter {
 
     private final String resourceName;
+    private final HttpClient client;
 
     public HTTPDataRelayAdapter(String resourceName) {
         this.resourceName = resourceName;
+        this.client = HttpClient.newBuilder().build();
     }
 
     @Override
     @SuppressWarnings("CallToPrintStackTrace")
     public void sendMessage(MessageVO message) throws Exception {
         Gson gson = new Gson();
-        HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(resourceName))
                 .header("Content-Type", "application/json")
