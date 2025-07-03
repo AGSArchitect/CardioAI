@@ -160,6 +160,17 @@ Start the traffic simulation by running the PayloadGenerator Java utility as fol
 
 `java -jar traffic-simulator-1.0.0.jar -s ./payloads/ -a HTTP -n http://gateway.cardioai.cloud/data/v1/ -o clinical -v D3F153 -b 3500 -f 0 -c 15000 -h 3 -x 275000`
 
+When working with large datasets, it is recommended to increase the amount of memory available to the utility by adjusting the initial and maximum heap size using the following JVM options.
+
+| JVM Option | Description                | Required |
+| :---       | :---                       | :---     | 
+| -Xms       | Sets the initial heap size | false    |
+| -Xmx       | Sets the maximum heap size | false    |
+
+The following example sets the initial heap size to 1 GB and the maximum heap size to 3 GB. Feel free to adjust the memory sizes depending on the dataset and your environment.
+
+`java -Xms1024m -Xmx3072m -jar traffic-simulator-1.0.0.jar -s ./payloads/ ...`
+
 The utility will use a different `originId` per data relay thread. In a real deployment, an origin will be either a physical electrocardiogram device or a dedicated CardioAI edge server within a clinical facility responsible for relaying data from a group of devices. The `deviceCode` in the message identifies the device that captured the electrocardiogram and is not associated with the origin.
 
 ```
