@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.slf4j.Logger;
@@ -35,11 +36,14 @@ public class TrafficSimulator {
             DataRelayConfig dataRelayConfig = new DataRelayConfig(config);
             RelayMonitorConfig relayMonitorConfig = new RelayMonitorConfig(config);
 
+            CountDownLatch sLatch = new CountDownLatch(1);
+            CountDownLatch eLatch = new CountDownLatch(config.getThreads());
+
             List<Runnable> toExecute = new ArrayList<>();
             List<Supervisable> toMonitor = new ArrayList<>();
             for (int i = 0; i < config.getThreads(); i++) {
                 DataRelay dataRelay = new DataRelay(
-                        dataRelayConfig, payloads);
+                        sLatch, eLatch, dataRelayConfig, payloads);
                 toExecute.add(dataRelay);
                 toMonitor.add(dataRelay);
             }
@@ -50,12 +54,15 @@ public class TrafficSimulator {
                 executor.submit(e);
             }
 
+            sLatch.countDown();
             RelayMonitor relayMonitor = new RelayMonitor(
                     relayMonitorConfig, Collections.unmodifiableList(toMonitor));
             executor.submit(relayMonitor);
-
             registerShutdownHooks(executor, relayMonitor);
-        } catch (IOException ex) {
+
+            eLatch.await();
+            System.exit(0);
+        } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
         }
     }
