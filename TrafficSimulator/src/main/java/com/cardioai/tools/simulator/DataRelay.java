@@ -100,11 +100,11 @@ public class DataRelay implements Runnable, Supervisable {
                             }
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
-                            messagesFailed++;
                         }
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    messagesFailed++;
                 }
             }
         } catch (Exception ex) {

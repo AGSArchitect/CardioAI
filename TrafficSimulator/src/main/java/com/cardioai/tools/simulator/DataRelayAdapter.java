@@ -10,5 +10,5 @@ import com.cardioai.tools.model.MessageVO;
  */
 public interface DataRelayAdapter {
 
-    public abstract void sendMessage(MessageVO message);
+    public abstract void sendMessage(MessageVO message) throws Exception;
 }
