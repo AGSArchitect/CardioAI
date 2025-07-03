@@ -8,40 +8,43 @@ package com.cardioai.tools.model;
  */
 public class CacheVO {
 
-    private String cacheId;
+    private final String cacheId;
+    private final PayloadVO payload;
+    private final long created;
     private int cacheReads;
-    private PayloadVO payload;
-    private long created;
+    private long accessed;
+
+    public CacheVO(String cacheId, PayloadVO payload, long created) {
+        this.cacheId = cacheId;
+        this.payload = payload;
+        this.created = created;
+    }
 
     public String getCacheId() {
         return cacheId;
-    }
-
-    public void setCacheId(String cacheId) {
-        this.cacheId = cacheId;
-    }
-
-    public int getCacheReads() {
-        return cacheReads;
-    }
-
-    public void setCacheReads(int cacheReads) {
-        this.cacheReads = cacheReads;
     }
 
     public PayloadVO getPayload() {
         return payload;
     }
 
-    public void setPayload(PayloadVO payload) {
-        this.payload = payload;
-    }
-
     public long getCreated() {
         return created;
     }
 
-    public void setCreated(long created) {
-        this.created = created;
+    public int getCacheReads() {
+        return cacheReads;
+    }
+
+    public void increaseCacheReads() {
+        cacheReads++;
+    }
+
+    public long getAccessed() {
+        return accessed;
+    }
+
+    public void setAccessed(long accessed) {
+        this.accessed = accessed;
     }
 }
