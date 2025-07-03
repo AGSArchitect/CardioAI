@@ -154,10 +154,11 @@ The DataExtractor is a Java utility that simulates the traffic of electrocardiog
 | -f          | --after       | Pause after each message (ms).                    | false    |
 | -c          | --cycle       | Pause after each monitoring cycle (ms).           | false    |
 | -h          | --threads     | The number of data relay threads (e.g., 3, 5).    | false    |
+| -x          | --maximun     | The maximum number of messages per relay thread.  | false    |
 
 Start the traffic simulation by running the PayloadGenerator Java utility as follows:
 
-`java -jar traffic-simulator-1.0.0.jar -s ./payloads/ -a HTTP -n http://gateway.cardioai.cloud/data/v1/ -o clinical -v D3F153 -b 3500 -f 0 -c 15000 -h 3`
+`java -jar traffic-simulator-1.0.0.jar -s ./payloads/ -a HTTP -n http://gateway.cardioai.cloud/data/v1/ -o clinical -v D3F153 -b 3500 -f 0 -c 15000 -h 3 -x 275000`
 
 The utility will use a different `originId` per data relay thread. In a real deployment, an origin will be either a physical electrocardiogram device or a dedicated CardioAI edge server within a clinical facility responsible for relaying data from a group of devices. The `deviceCode` in the message identifies the device that captured the electrocardiogram and is not associated with the origin.
 
