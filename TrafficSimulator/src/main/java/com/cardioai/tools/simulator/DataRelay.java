@@ -1,6 +1,7 @@
 package com.cardioai.tools.simulator;
 
 import com.cardioai.tools.model.PayloadVO;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,9 +21,25 @@ public class DataRelay implements Runnable, Supervisable {
     }
 
     @Override
+    @SuppressWarnings("CallToPrintStackTrace")
     public void run() {
-        /**
-         * TODO: Provide Implementation...
-         */
+        List<PayloadVO> toCache = new ArrayList<>();
+        while (!payloads.isEmpty()) {
+            PayloadVO e = payloads.remove(0);
+            if (e != null) {
+                toCache.add(e);
+            }
+
+            try {
+                synchronized (payloads) {
+                    payloads.wait(3);
+                }
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        CacheController controller = new CacheController();
+        controller.initialize(toCache);
     }
 }

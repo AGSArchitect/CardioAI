@@ -46,7 +46,11 @@ public enum LogMessage {
     /**
      * TS010
      */
-    TS010("code=\"{}\" message=\"The command line argument is unknown\" argument=\"{}\"");
+    TS010("code=\"{}\" message=\"The command line argument is unknown\" argument=\"{}\""),
+    /**
+     * TS011
+     */
+    TS011("code=\"{}\" message=\"The payload collection is empty\"");
 
     private final String message;
 
