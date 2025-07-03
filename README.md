@@ -161,6 +161,44 @@ Start the traffic simulation by running the PayloadGenerator Java utility as fol
 
 The utility will use a different `originId` per data relay thread. In a real deployment, an origin will be either a physical electrocardiogram device or a dedicated CardioAI edge server within a clinical facility responsible for relaying data from a group of devices. The `deviceCode` in the message identifies the device that captured the electrocardiogram and is not associated with the origin.
 
+```
+{
+  "originId": "11099b9b-2918-4dd5-a353-7219112ef66e",
+  "messageId": "05143a8d-f63e-4115-b72e-7b5a550e6b91",
+  "originCode": "clinical",
+  "deviceCode": "D3F153",
+  "messageType": "cardioai.ekg.data",
+  "messageVersion": 1,
+  "payload": {
+    "deviceId": "9dd2f083-3d09-43bf-ba54-ddba69e52723",
+    "customerId": "a1080b80-baed-4ba4-a4e0-411d4769ee92",
+    "sequenceId": "ca55907d-29c7-449c-ae58-06ccbbaccdac",
+    "sequence": 1,
+    "index": 1,
+    "headers": "INDEX,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6",
+    "data": [
+      "0,-90,-20,70,55,-80,25,45,-45,-70,-25,20,-5",
+      "1,-90,-20,70,55,-80,25,45,-43,-70,-28,20,-5",
+      "2,-90,-20,70,55,-80,25,48,-37,-71,-38,20,-5",
+      "3,-94,-20,74,56,-84,26,51,-35,-69,-47,20,-5",
+      "4,-95,-20,75,57,-85,27,54,-28,-71,-50,20,-5",
+      "5,-105,-31,74,67,-89,22,55,-27,-41,-53,20,-5",
+      "6,-107,-36,71,71,-88,17,55,-47,-3,-56,15,-10",
+      "7,-101,-34,66,67,-83,16,55,-52,11,-60,15,-10",
+      "8,-99,-35,64,67,-81,14,55,-64,58,-60,14,-10",
+      "9,-94,-35,59,65,-76,12,55,-83,85,-56,10,-10",
+      "10,-91,-35,56,62,-73,10,55,-79,75,-53,10,-9",
+      "11,-83,-30,52,56,-67,11,53,-71,74,-50,8,-13",
+      ...
+    ],
+    "recordId": "07b2b502-fdf6-4f88-858d-72fc90bcdbf5",
+    "created": 1751472352679
+  },
+  "created": 54707984251875
+}
+```
+**Example 5:** A CardioAI EKG data message containing a payload generated from the PTB-XL ECG dataset (12-lead)
+
 ![Diagram 1](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/diagrams/uml-traffic-simulator.png "Diagram 1")
 **Diagram 1:** UML diagram depicting the main components of the Traffic Simulation utility.
 
