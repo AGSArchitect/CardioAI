@@ -41,9 +41,9 @@ public class Utils {
         }
     }
 
-    public static void logDataRelayMetrics(Logger logger, LogMessage message, String originId, int messagesRelayed, int messagesFailed) {
+    public static void logDataRelayMetrics(Logger logger, LogMessage message, int cycles, String originId, int messagesRelayed, int messagesFailed) {
         logger.info(message.getMessage(),
-                message.name(), originId,
+                message.name(), cycles, originId,
                 String.valueOf(messagesRelayed),
                 String.valueOf(messagesFailed));
     }

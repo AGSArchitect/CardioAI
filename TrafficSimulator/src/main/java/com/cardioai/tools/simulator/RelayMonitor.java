@@ -16,11 +16,13 @@ public class RelayMonitor implements Runnable {
 
     private final RelayMonitorConfig config;
     private final List<Supervisable> toMonitor;
+    private int cycles;
     private boolean shutdown;
 
     public RelayMonitor(RelayMonitorConfig config, List<Supervisable> toMonitor) {
         this.config = config;
         this.toMonitor = toMonitor;
+        this.cycles = 0;
         this.shutdown = false;
     }
 
@@ -58,10 +60,11 @@ public class RelayMonitor implements Runnable {
     }
 
     private void displayMetrics() {
+        cycles++;
         for (Supervisable e : toMonitor) {
             DataRelayMetrics metrics = e.getMetrics();
             Utils.logDataRelayMetrics(
-                    LOGGER, LogMessage.TS205, metrics.getOriginId(),
+                    LOGGER, LogMessage.TS205, cycles, metrics.getOriginId(),
                     metrics.getMessagesRelayed(), metrics.getMessagesFailed());
         }
     }

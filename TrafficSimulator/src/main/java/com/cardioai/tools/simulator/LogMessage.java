@@ -66,7 +66,7 @@ public enum LogMessage {
     /**
      * TS205. Metrics.
      */
-    TS205("code=\"{}\" message=\"Metrics\" originId=\"{}\" messagesRelayed={} messagesFailed={}");
+    TS205("code=\"{}\" message=\"Metrics\" cycles={} originId=\"{}\" messagesRelayed={} messagesFailed={}");
 
     private final String message;
 
