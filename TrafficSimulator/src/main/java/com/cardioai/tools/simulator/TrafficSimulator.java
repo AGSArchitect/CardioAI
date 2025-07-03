@@ -26,7 +26,7 @@ public class TrafficSimulator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrafficSimulator.class);
 
-    @SuppressWarnings("CallToPrintStackTrace")
+    @SuppressWarnings({"CallToPrintStackTrace", "UseSpecificCatch"})
     public static void main(String[] args) {
         try {
             TrafficSimulatorConfig config = getTrafficSimulatorConfig(args);
@@ -62,7 +62,7 @@ public class TrafficSimulator {
 
             eLatch.await();
             System.exit(0);
-        } catch (IOException | InterruptedException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

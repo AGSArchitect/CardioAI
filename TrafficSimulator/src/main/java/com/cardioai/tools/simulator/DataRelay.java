@@ -32,7 +32,7 @@ public class DataRelay implements Runnable, Supervisable {
     }
 
     @Override
-    @SuppressWarnings("CallToPrintStackTrace")
+    @SuppressWarnings({"CallToPrintStackTrace", "UseSpecificCatch"})
     public void run() {
         try {
             sLatch.await();
@@ -58,9 +58,6 @@ public class DataRelay implements Runnable, Supervisable {
             DataRelayAdapter adapter = DataRelayAdapterFactory.getAdapter(
                     config.getAdapterName(), config.getResourceName());
 
-            /**
-             * TODO: Provide Implementation...
-             */
             for (int i = 0; i < config.getMaximun(); i++) {
                 MessageVO message = new MessageVO(
                         originId,
@@ -71,10 +68,9 @@ public class DataRelay implements Runnable, Supervisable {
                         MESSAGE_VERSION,
                         controller.getNextPayload(),
                         Utils.getCurrentTime());
-
                 adapter.sendMessage(message);
             }
-        } catch (InterruptedException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             eLatch.countDown();
