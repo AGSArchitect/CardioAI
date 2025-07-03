@@ -167,7 +167,7 @@ When working with large datasets, it is recommended to increase the amount of me
 | -Xms       | Sets the initial heap size | false    |
 | -Xmx       | Sets the maximum heap size | false    |
 
-The following example sets the initial heap size to 1 GB and the maximum heap size to 3 GB. Feel free to adjust the sizes according to your environment.
+The following example sets the initial heap size to 1 GB and the maximum heap size to 3 GB. Feel free to adjust the memory sizes depending on the dataset and your environment.
 
 `java -Xms1024m -Xmx3072m -jar traffic-simulator-1.0.0.jar -s ./payloads/ ...`
 
