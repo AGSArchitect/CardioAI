@@ -291,6 +291,8 @@ During our Impact Project, the CardioAI team will verify the arrival of electroc
 ![ESB Monitoring](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/captures/esb-monitoring.png "ESB Monitoring")
 **Picture 1:** Monitoring of CardioAI secondary ESB.
 
+There are only two (2) rules defined in the secondary ESB at this time to differentiate between Clinical and Consumer messages. However, further segmentation may be required on production to address customer requirements and performance considerations.
+
 ![ESB Rules](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/captures/esb-rules.png "ESB Rules")
 **Picture 1:** Routing rules on CardioAI secondary ESB, which handles messages smaller than **256** KB.
 
