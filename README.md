@@ -283,13 +283,35 @@ Below is the final structure of a CardioAI EKG data message after it has been fo
     }
 }
 ```
-**Example 6:** A final CardioAI EKG data message containing a payload generated from the PTB-XL ECG dataset (12-lead)
+
+## Step 5: Verification
+
+During our Impact Project, the CardioAI team will verify the arrival of electrocardiogram messages by monitoring the Primary and Secondary ESBs. However, the team also has the option of monitoring the messages as they are routed by the different ESB rules or directly in SQS.
+
+![ESB Monitoring](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/captures/esb-monitoring.png "ESB Monitoring")
+**Picture 1:** Monitoring of CardioAI secondary ESB.
+
+![ESB Rules](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/captures/esb-rules.png "ESB Rules")
+**Picture 1:** Routing rules on CardioAI secondary ESB, which handles messages smaller than **256** KB.
+
+## Step 6: Software Design
+
+The software design of the Traffic Simulation utility enables its easy extension to support additional relay implementations in the future, some of which may include Amazon Data Firehose, among others. The Component Diagram, Architecture Solution Diagram, Complexity Analysis, and Design Structure Matrix (DSM) for the various product families, which will be part of our final project submission, are not publicly available at this time.
 
 ![Diagram 1](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/diagrams/uml-traffic-simulator.png "Diagram 1")
 **Diagram 1:** UML diagram depicting the main components of the Traffic Simulation utility.
 
-## Step 5: Verification
+## Step 7: The Team
 
-*Under development...*
+The team members of the CardioAI Impact Project are listed below in alphabetical order:
 
-Ariel Gonzalez
+- Barroso, Helga
+- Bishop, Jonathan
+- Gonzalez, Ariel
+- Kasani, Chaitanya
+- Philippe, Vincent
+- Schenone, Maria
+
+> Ariel Gonzalez - Solutions Architect
+
+**Massachusetts Institute of Technology** | Professional Certificate Program in Product Management | 2024
