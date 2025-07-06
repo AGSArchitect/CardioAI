@@ -11,7 +11,7 @@ The team concluded that it would be more flexible to use manifest files instead 
 `find ./ptb-xl/ -type f -regex '.*\.hea$' > ptb-xl.mf`
 
 ## Step 2: Data Extraction
-The DataExtractor is a Java utility that generates a shell script to extract electrocardiogram data. Consequently, pulling the data is a two-step process. PhysioNet offers Java bindings to facilitate interoperability with the WFDB library via WFDB-SWIG. However, since we are only interested in data extraction at this time, we used a more direct approach. The supported command line arguments are summarized below.
+The [DataExtractor](https://github.com/AGSArchitect/CardioAI/blob/main/DataExtractor/src/main/java/com/cardioai/tools/extractor/DataExtractor.java) is a Java utility that generates a shell script to extract electrocardiogram data. Consequently, pulling the data is a two-step process. PhysioNet offers Java bindings to facilitate interoperability with the WFDB library via WFDB-SWIG. However, since we are only interested in data extraction at this time, we used a more direct approach. The supported command line arguments are summarized below.
 
 | Short Form  | Long Form     | Function                                      | Required |
 | :---        | :---          | :---                                          | :---:    | 
@@ -57,7 +57,7 @@ The Java utility names the data files using a Universally Unique Identifier (UUI
 
 ## Step 3: Data Conversion
 
-The PayloadGenerator is a Java utility that reads the extracted data from the previous step and generates JSON serialized payloads for the CardioAI ingestion layer. The payloads will be part of a final message containing additional fields. The supported command line arguments are summarized below.
+The [PayloadGenerator](https://github.com/AGSArchitect/CardioAI/blob/main/PayloadGenerator/src/main/java/com/cardioai/tools/generator/PayloadGenerator.java) is a Java utility that reads the extracted data from the previous step and generates JSON serialized payloads for the CardioAI ingestion layer. The payloads will be part of a final message containing additional fields. The supported command line arguments are summarized below.
 
 | Short Form  | Long Form     | Function                                      | Required |
 | :---        | :---          | :---                                          | :---:    | 
@@ -141,7 +141,7 @@ The data model has a `sequence` and an `index` field to facilitate segmenting ex
 
 ## Step 4: Traffic Simulation
 
-The DataExtractor is a Java utility that simulates the traffic of electrocardiogram data arriving at the CardioAI ingestion layer. The initial implementation will have only two adapter types. The primary adapter will relay data over HTTP to the service endpoints, and the secondary adapter will simulate traffic arriving directly into the Enterprise Service Bus (ESB). The latter adapter will be helpful to simulate traffic for customers integrating via AWS PrivateLink. The supported command line arguments are summarized below.
+The [TrafficSimulator](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/src/main/java/com/cardioai/tools/simulator/TrafficSimulator.java) is a Java utility that simulates the traffic of electrocardiogram data arriving at the CardioAI ingestion layer. The initial implementation will have only two adapter types. The primary adapter will relay data over HTTP to the service endpoints, and the secondary adapter will simulate traffic arriving directly into the Enterprise Service Bus (ESB). The latter adapter will be helpful to simulate traffic for customers integrating via AWS PrivateLink. The supported command line arguments are summarized below.
 
 | Short Form  | Long Form     | Function                                          | Required |
 | :---        | :---          | :---                                              | :---:    |
