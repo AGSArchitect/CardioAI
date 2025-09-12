@@ -1,5 +1,5 @@
 # CardioAI
-The CardioAI repository contains a series of utilities for extracting, converting, and transmitting electrocardiogram data files originating from various databases hosted at [PhysioNet](https://physionet.org/). The utilities were developed by Group 2 (Cohord 20024) as part of the Professional Certificate Program in Product Management from the Massachusetts Institute of Technology (MIT).
+The CardioAI repository contains a series of utilities for extracting, converting, and transmitting electrocardiogram data files originating from various databases hosted at [PhysioNet](https://physionet.org/). The utilities were developed by Group 2 (Cohort 20024) as part of the Professional Certificate Program in Product Management from the Massachusetts Institute of Technology (MIT).
 
 PhysioNet stores the electrocardiogram data files on various WaveForm Database formats, which are also referred to as WFDB. A WFDB record is comprised of a header file and any number of signal and annotation files in binary format. Because the CardioAI ingestion layer expects data files to be transmitted in JavaScript Object Notation (JSON) format over HTTP, the team developed these utilities to convert the extracted electrocardiogram data into suitable payloads to be consumed by the ingestion layer.
 
