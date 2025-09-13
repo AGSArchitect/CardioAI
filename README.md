@@ -296,14 +296,14 @@ There are only two (2) rules defined in the secondary ESB at this time to differ
 ![ESB Rules](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/captures/esb-rules.png "ESB Rules")
 **Picture 1:** Routing rules on CardioAI secondary ESB, which handles messages smaller than **256** KB.
 
-## Step 6: Software Design
+## Software Design
 
 The software design of the Traffic Simulation utility enables its easy extension to support additional relay implementations in the future, some of which may include Amazon Data Firehose, among others. The Component Diagram, Architecture Solution Diagram, Complexity Analysis, and Design Structure Matrix (DSM) for the various product families, which will be part of our final project submission, are not publicly available at this time.
 
 ![Diagram 1](https://github.com/AGSArchitect/CardioAI/blob/main/TrafficSimulator/diagrams/uml-traffic-simulator.png "Diagram 1")
 **Diagram 1:** UML diagram depicting the main components of the Traffic Simulation utility.
 
-## Step 7: The Team
+## The Team
 
 The team members of the CardioAI Impact Project are listed below in alphabetical order:
 
